@@ -1,0 +1,74 @@
+version: '3.7'
+
+services:
+  backend:
+    container_name: {{cookiecutter.project_slug}}_backend
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    volumes:
+      - ./{{cookiecutter.project_slug}}/:/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}/
+    working_dir: /{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}/
+    command: uvicorn {{cookiecutter.project_slug}}.asgi:application --reload --host 0.0.0.0 --port 8000
+    ports:
+      - 8000:8000
+
+
+{% if cookiecutter.celery == 'y' %}
+
+  redis:
+    container_name: {{cookiecutter.project_slug}}_redis
+    restart: always
+    image: redis:latest
+    expose:
+      - 6379
+    environment:
+      - TZ:"Europe/Moscow"
+
+  celery:
+    container_name: {{cookiecutter.project_slug}}_celery
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: sh -c "celery -A {{cookiecutter.project_slug}} worker -c 4 --loglevel=info"
+    env_file:
+      - .env
+    working_dir: /{{cookiecutter.project_slug}}/
+    volumes:
+      - ./{{cookiecutter.project_slug}}/:/{{cookiecutter.project_slug}}/
+    depends_on:
+      - redis
+
+  celerybeat:
+    container_name: {{cookiecutter.project_slug}}_celerybeat
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: sh -c "celery -A {{cookiecutter.project_slug}} beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler --pidfile="
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - celery
+    working_dir: /{{cookiecutter.project_slug}}/
+    volumes:
+      - ./{{cookiecutter.project_slug}}/:/{{cookiecutter.project_slug}}/
+
+
+  flower:
+    container_name: choice_flower
+    image: mher/flower:0.9.5
+    ports:
+      - 5000:5555
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+       - ./{{cookiecutter.project_slug}}/:/{{cookiecutter.project_slug}}/
+    working_dir: /{{cookiecutter.project_slug}}/
+    command: sh -c "flower -A {{cookiecutter.project_slug}} --loglevel=info"
+
+{% endif %}

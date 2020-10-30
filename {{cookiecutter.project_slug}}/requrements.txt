@@ -1,0 +1,21 @@
+Django
+psycopg2
+uvicorn
+
+{% if cookiecutter.use_log_to_telegram == 'y' %}
+django-log-to-telegram
+{% endif %}
+
+{% if cookiecutter.use_drf == 'y' %}
+djangorestframework
+{% endif %}
+
+{% if cookiecutter.celery == 'y' %}
+
+django-celery-beat==2.1.0
+django-redis==4.12.1
+redis
+celery==4.4.2
+flower==0.9.5
+
+{% endif %}
