@@ -1,3 +1,5 @@
+Cookiecutter Django
+=======================
 Cookiecutter_ template for a Django project.
 
 * GitHub repo: https://github.com/egornevezhin/django-cookiecutter
