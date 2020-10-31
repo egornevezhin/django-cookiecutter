@@ -9,5 +9,6 @@
   "create_dev_environment": "y",
   "celery": "y",
   "use_log_to_telegram": "y",
-  "use_drf": "y"
+  "use_drf": "y",
+  "docker_postgres": "n"
 }

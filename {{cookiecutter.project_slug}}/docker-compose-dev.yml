@@ -16,6 +16,19 @@ services:
     ports:
       - 8000:8000
 
+{% if cookiecutter.docker_postgres == 'y' %}
+
+  db:
+    container_name: {{cookiecutter.project_slug}}_base
+    image: postgres
+    restart: on-failure
+    env_file:
+      - .env-dev
+    expose:
+      - 5432
+
+{% endif %}
+
 {% if cookiecutter.celery == 'y' %}
 
   redis:
