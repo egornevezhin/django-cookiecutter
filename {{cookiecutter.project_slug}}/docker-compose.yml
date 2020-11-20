@@ -23,7 +23,7 @@ services:
     image: postgres
     restart: on-failure
     env_file:
-      - .env-dev
+      - .env
     expose:
       - 5432
 
