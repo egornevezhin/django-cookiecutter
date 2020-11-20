@@ -1,3 +1,4 @@
+{% raw %}
 groups:
 - name: example
   rules:
@@ -20,3 +21,4 @@ groups:
     annotations:
       summary: "Instance {{ $labels.instance }} under high load"
       description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
+{% endraw %}
