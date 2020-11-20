@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-from shutil import copyfile
+import shutil
 
 PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
 
@@ -17,4 +17,8 @@ if __name__ == '__main__':
 
     if '{{ cookiecutter.celery }}' == 'n':
         remove_file('{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}/celery.py')
+
+    if '{{ cookiecutter.grafana }}' == 'n':
+        shutil.rmtree('grafana', ignore_errors=True)
+        shutil.rmtree('prometheus', ignore_errors=True)
 

@@ -50,6 +50,15 @@ INSTALLED_APPS += [
     'django_log_to_telegram',]
 {% endif %}
 
+{% if cookiecutter.grafana == 'y' %}
+INSTALLED_APPS += [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware'
+]
+#PROMETEUS
+PROMETHEUS_EXPORT_MIGRATIONS = False
+{% endif %}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

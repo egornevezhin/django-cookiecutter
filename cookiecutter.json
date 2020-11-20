@@ -10,5 +10,6 @@
   "celery": "y",
   "use_log_to_telegram": "y",
   "use_drf": "y",
-  "docker_postgres": "n"
+  "docker_postgres": "n",
+  "cookiecutter.grafana": "n"
 }
